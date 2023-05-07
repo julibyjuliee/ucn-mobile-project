@@ -1,7 +1,7 @@
+import '../pages/home.dart';
 import 'firebase_options.dart';
+import '../pages/add_name.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba/pages/home.dart';
-import 'package:prueba/pages/add_name.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 

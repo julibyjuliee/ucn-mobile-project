@@ -1,4 +1,4 @@
-import 'package:prueba/services/personas.dart';
+import '../services/personas.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Crear instancia de la base de datos
@@ -23,5 +23,5 @@ Future<List> getPersonas() async {
 //Registrar Usuarios
 
 Future<void> addPersonasToFirestore(Person person) async {
-  await FirebaseFirestore.instance.collection('personas').add(person.toMap());
+  await FirebaseFirestore.instance.collection('personas ').add(person.toMap());
 }

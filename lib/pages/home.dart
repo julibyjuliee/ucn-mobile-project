@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prueba/services/firebase_service.dart';
+import '../services/firebase_service.dart';
 
 
 
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemBuilder: (context, index) {
                       // String edad = snapshot.data?[index]['edad']?.toString() ?? '';
                       return Column(children: [
-                        Text(snapshot.data?[index]['nombre']),
+                        Text(snapshot.data?[index]['nombre_Apellido']),
                         // Text(edad),
                       ]);
                     });

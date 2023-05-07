@@ -23,19 +23,19 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nombreController = TextEditingController();
-  TextEditingController edadController = TextEditingController();
+  // TextEditingController edadController = TextEditingController();
 
   TextEditingController textController = TextEditingController(text: "");
   // String _nombre, _apellido, _correo;
 
-  void agregarUsuario() async {
+  /*  void agregarUsuario() async {
     String nombre = nombreController.text;
-    int edad = int.parse(edadController.text);
+    // int edad = int.parse(edadController.text);
 
     Person person = Person(nombre: nombre, edad: edad);
 
     await addPersonasToFirestore(person);
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +51,13 @@ class _AddPageState extends State<AddPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
-                controller: nombreController,
+                controller: textController,
                 decoration: const InputDecoration(
                   labelText: 'Nombres Y Apellidos',
                 ),
               ),
               TextFormField(
-                controller: edadController,
+                // controller: edadController,
                 decoration: const InputDecoration(
                   labelText: 'Edad',
                 ),
@@ -70,9 +70,9 @@ class _AddPageState extends State<AddPage> {
                       _formKey.currentState.save();
                       _agregarUsuario();
                     } */
-                    agregarUsuario();
+                    // agregarUsuario();
                     print(nombreController.text);
-                    print(edadController.text);
+                    // print(edadController.text);
                   },
                   child: const Text('Agregar'),
                 ),
