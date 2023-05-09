@@ -10,7 +10,7 @@ Future<List> getPersonas() async {
   List persona = [];
   CollectionReference collectionReferencePersonas = db.collection('personas');
 
-  QuerySnapshot query = await collectionReferencePersonas.get();
+  QuerySnapshot query = await collectionReferencePersonas.orderBy('nombre_Apellido').get();
 
   query.docs.forEach((documento) {
     //se le agrega la data que viene en la db en la lista persona
@@ -22,6 +22,6 @@ Future<List> getPersonas() async {
 
 //Registrar Usuarios
 
-Future<void> addPersonasToFirestore(Person person) async {
-  await FirebaseFirestore.instance.collection('personas ').add(person.toMap());
+Future<void> addPersonasToFirestore(String nombreApellido, int edad) async {
+  await FirebaseFirestore.instance.collection('personas').add({"nombre_Apellido": nombreApellido,"edad": edad});
 }

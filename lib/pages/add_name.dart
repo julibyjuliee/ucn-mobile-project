@@ -7,35 +7,15 @@ class AddPage extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   State<AddPage> createState() => _AddPageState();
 }
 
 class _AddPageState extends State<AddPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nombreController = TextEditingController();
-  // TextEditingController edadController = TextEditingController();
-
-  TextEditingController textController = TextEditingController(text: "");
-  // String _nombre, _apellido, _correo;
-
-  /*  void agregarUsuario() async {
-    String nombre = nombreController.text;
-    // int edad = int.parse(edadController.text);
-
-    Person person = Person(nombre: nombre, edad: edad);
-
-    await addPersonasToFirestore(person);
-  } */
+  TextEditingController nombreApellidoController =
+      TextEditingController(text: "");
+  TextEditingController edadController = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -51,28 +31,60 @@ class _AddPageState extends State<AddPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
-                controller: textController,
+                controller: nombreApellidoController,
                 decoration: const InputDecoration(
                   labelText: 'Nombres Y Apellidos',
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese los nombres y apellidos';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
-                // controller: edadController,
+                controller: edadController,
                 decoration: const InputDecoration(
                   labelText: 'Edad',
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la edad';
+                  }
+                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                    return 'La edad solo puede contener caracteres numéricos';
+                  }
+                  return null;
+                },
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    /* if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      _agregarUsuario();
-                    } */
-                    // agregarUsuario();
-                    print(nombreController.text);
-                    // print(edadController.text);
+                  onPressed: () async {
+                    int edad = int.parse(edadController.text);
+                    await addPersonasToFirestore(
+                            nombreApellidoController.text, edad)
+                        .then((value) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Agregado con éxito'),
+                            content: Text(
+                                'El usuario se ha agregado correctamente.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    });
                   },
                   child: const Text('Agregar'),
                 ),
