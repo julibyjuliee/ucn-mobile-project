@@ -88,13 +88,13 @@ class PromedioEdadWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8),
-        FutureBuilder<double>(
+        FutureBuilder<int>(
           future: getPromedioEdad(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              double averageAge = snapshot.data!;
+              int averageAge = snapshot.data!;
               return Text(
-                '${averageAge.toStringAsFixed(1)}%',
+                '$averageAge Años',
                 style: TextStyle(
                   color: Color.fromRGBO(0, 29, 36, 14),
                   fontSize: 28,

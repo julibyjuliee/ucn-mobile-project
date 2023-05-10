@@ -34,21 +34,21 @@ Future<void> addPersonasToFirestore(String nombreApellido, int edad) async {
 
 //Calcular promedio de edad
 
-Future<double> getPromedioEdad() async {
-  CollectionReference usersRef =
-      FirebaseFirestore.instance.collection('personas');
+Future<int> getPromedioEdad() async {
+  CollectionReference usersRef = FirebaseFirestore.instance.collection('personas');
   QuerySnapshot snapshot = await usersRef.get();
 
-  num edadTotal = 0;
+  int edadTotal = 0;
   int numeroTotalUsuarios = snapshot.size;
 
   snapshot.docs.forEach((doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    edadTotal += data['edad'] as num;
+    edadTotal += data['edad'] as int;
   });
 
-  return edadTotal / numeroTotalUsuarios;
+  return edadTotal ~/ numeroTotalUsuarios;
 }
+
 
 //Calcular promedio de edad
 
