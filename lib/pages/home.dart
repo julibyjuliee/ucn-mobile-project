@@ -89,7 +89,7 @@ class PromedioEdadWidget extends StatelessWidget {
         ),
         SizedBox(height: 8),
         FutureBuilder<double>(
-          future: getAverageAge(),
+          future: getPromedioEdad(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               double averageAge = snapshot.data!;
@@ -121,7 +121,7 @@ class PersonasRegistradas extends StatelessWidget {
       height: 30,
       child: Center(
         child: FutureBuilder<int>(
-          future: getNumberOfPersons(),
+          future: getNumeroDePersonas(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Row(
