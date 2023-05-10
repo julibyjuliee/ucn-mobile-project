@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
 import '../services/firebase_service.dart';
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison
 
-class AddPage extends StatefulWidget {
-  const AddPage({
+class EditPage extends StatefulWidget {
+  const EditPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddPage> createState() => _AddPageState();
+  State<EditPage> createState() => _EditPageState();
 }
 
-class _AddPageState extends State<AddPage> {
+class _EditPageState extends State<EditPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nombreApellidoController =
-      TextEditingController(text: "");
-  TextEditingController edadController = TextEditingController(text: "");
+  TextEditingController nombreApellidoController = TextEditingController();
+  TextEditingController edadController = TextEditingController();
+  String uid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+      if (arguments != null) {
+        nombreApellidoController.text = arguments['nombre_Apellido'] ?? '';
+        edadController.text = arguments['edad']?.toString() ?? '';
+        uid = arguments['uid'] ?? '';
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar Usuarios'),
+        title: const Text('Editar Usuarios'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,7 +46,7 @@ class _AddPageState extends State<AddPage> {
               TextFormField(
                 controller: nombreApellidoController,
                 decoration: const InputDecoration(
-                  labelText: 'Nombres Y Apellidos',
+                  labelText: 'Nombres y Apellidos',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -62,16 +75,16 @@ class _AddPageState extends State<AddPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     int edad = int.parse(edadController.text);
-                    await addPersonasToFirestore(
-                            nombreApellidoController.text, edad)
+                    await updatePersonasToFirestore(
+                            uid, nombreApellidoController.text, edad)
                         .then((value) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Agregado con éxito'),
+                            title: Text('Actualizado con éxito'),
                             content: Text(
-                                'El usuario se ha agregado correctamente.'),
+                                'El usuario se ha actualizado correctamente.'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
@@ -86,7 +99,7 @@ class _AddPageState extends State<AddPage> {
                       );
                     });
                   },
-                  child: const Text('Agregar'),
+                  child: const Text('Actualizar'),
                 ),
               ),
             ],

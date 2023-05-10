@@ -13,8 +13,14 @@ Future<List> getPersonas() async {
       await collectionReferencePersonas.orderBy('nombre_Apellido').get();
 
   query.docs.forEach((documento) {
+    final Map<String, dynamic> data = documento.data() as Map<String, dynamic>;
+    final person = {
+      'nombre_Apellido': data['nombre_Apellido'],
+      'edad': data['edad'],
+      'uid': documento.id,
+    };
     //se le agrega la data que viene en la db en la lista persona
-    persona.add(documento.data());
+    persona.add(person);
   });
 
   return persona;
@@ -29,13 +35,24 @@ Future<void> addPersonasToFirestore(String nombreApellido, int edad) async {
 }
 
 //Editar usuarios
+Future<void> updatePersonasToFirestore(
+    String uid, String newNombreApellido, int newEdad) async {
+  await db
+      .collection('personas')
+      .doc(uid)
+      .set({"nombre_Apellido": newNombreApellido, "edad": newEdad});
+}
 
 //Eliminar usuarios
+Future<void> eliminarUsuario(String uid) async {
+  await db.collection('personas').doc(uid).delete();
+}
 
 //Calcular promedio de edad
 
 Future<int> getPromedioEdad() async {
-  CollectionReference usersRef = FirebaseFirestore.instance.collection('personas');
+  CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('personas');
   QuerySnapshot snapshot = await usersRef.get();
 
   int edadTotal = 0;
@@ -48,7 +65,6 @@ Future<int> getPromedioEdad() async {
 
   return edadTotal ~/ numeroTotalUsuarios;
 }
-
 
 //Calcular promedio de edad
 

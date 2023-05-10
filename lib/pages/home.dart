@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/firebase_service.dart';
+// ignore_for_file: use_build_context_synchronously
+
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -11,11 +14,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _isDeleting = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Inicio'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,11 +46,130 @@ class _MyHomePageState extends State<MyHomePage> {
                         columns: [
                           DataColumn(label: Text('Nombre y Apellido')),
                           DataColumn(label: Text('Edad')),
+                          DataColumn(
+                            label: Text('Acciones'),
+                          ),
                         ],
                         rows: snapshot.data!.map<DataRow>((persona) {
+                          final uid = persona['uid'];
+                          final nombreApellido = persona['nombre_Apellido'];
+                          final edad = persona['edad'].toString();
+
                           return DataRow(cells: [
-                            DataCell(Text(persona['nombre_Apellido'])),
-                            DataCell(Text(persona['edad'].toString())),
+                            DataCell(Text(nombreApellido)),
+                            DataCell(Text(edad)),
+                            DataCell(Row(
+                              children: [
+                                TextButton(
+                                  onPressed: () async {
+                                    await Navigator.pushNamed(
+                                      context,
+                                      '/editPage',
+                                      arguments: {
+                                        'nombre_Apellido': nombreApellido,
+                                        'edad': edad,
+                                        'uid': uid,
+                                      },
+                                    );
+                                    setState(() {});
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit,
+                                        color: Colors.orange, // Color naranja
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el ícono y el texto
+                                      Text(
+                                        'Editar',
+                                        style: TextStyle(
+                                          color: Colors.orange, // Color naranja
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'Confirmar eliminación'),
+                                          content: const Text(
+                                              '¿Estás seguro de eliminar este usuario?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('Cancelar'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                setState(() {
+                                                  _isDeleting = true;
+                                                });
+                                                await eliminarUsuario(
+                                                    uid); // Función para eliminar al usuario
+                                                setState(() {
+                                                  _isDeleting = false;
+                                                });
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'Eliminación exitosa'),
+                                                      content: const Text(
+                                                          'El usuario se eliminó correctamente.'),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: const Text(
+                                                              'Aceptar'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                              child: const Text('Eliminar'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              5), // Espacio entre el ícono y el texto
+                                      Text(
+                                        'Eliminar',
+                                        style: TextStyle(
+                                          color: Colors.red, // Color rojo
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )),
                           ]);
                         }).toList(),
                       );
