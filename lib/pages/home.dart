@@ -44,7 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (snapshot.hasData) {
                       return DataTable(
                         columns: [
-                          DataColumn(label: Text('Nombre y Apellido')),
+                          DataColumn(
+                            label: SizedBox(
+                              width: 90,
+                              child: Text('Nombre y Apellido'),
+                            ),
+                          ),
                           DataColumn(label: Text('Edad')),
                           DataColumn(
                             label: Text('Acciones'),
@@ -82,12 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       SizedBox(
                                           width:
                                               5), // Espacio entre el ícono y el texto
-                                      Text(
-                                        'Editar',
-                                        style: TextStyle(
-                                          color: Colors.orange, // Color naranja
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ),
@@ -159,12 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                       SizedBox(
                                           width:
                                               5), // Espacio entre el ícono y el texto
-                                      Text(
-                                        'Eliminar',
-                                        style: TextStyle(
-                                          color: Colors.red, // Color rojo
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 )
@@ -252,7 +245,7 @@ class PersonasRegistradas extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Número de personas registradas: ${snapshot.data}',
+                    'Personas registradas: ${snapshot.data}',
                     style: TextStyle(
                       color: Color.fromRGBO(0, 29, 36, 14),
                       fontWeight: FontWeight.bold,
