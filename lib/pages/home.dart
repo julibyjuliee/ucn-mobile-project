@@ -195,16 +195,19 @@ class PromedioEdadWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          'Promedio de edad',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Color.fromRGBO(0, 29, 36, 14),
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: Text(
+            'Promedio de edad',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color.fromRGBO(0, 29, 36, 14),
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        SizedBox(height: 8),
+        SizedBox(height: 10),
         FutureBuilder<int>(
           future: getPromedioEdad(),
           builder: (context, snapshot) {
