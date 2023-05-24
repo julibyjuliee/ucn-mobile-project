@@ -15,6 +15,7 @@ class _EditPageState extends State<EditPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nombreApellidoController = TextEditingController();
   TextEditingController edadController = TextEditingController();
+  TextEditingController hobbiesController = TextEditingController();
   String uid = '';
 
   @override
@@ -24,6 +25,7 @@ class _EditPageState extends State<EditPage> {
       final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
       if (arguments != null) {
         nombreApellidoController.text = arguments['nombre_Apellido'] ?? '';
+        hobbiesController.text = arguments['hobbies'] ?? '';
         edadController.text = arguments['edad']?.toString() ?? '';
         uid = arguments['uid'] ?? '';
       }
@@ -70,13 +72,28 @@ class _EditPageState extends State<EditPage> {
                   return null;
                 },
               ),
+              TextFormField(
+                controller: hobbiesController,
+                decoration: const InputDecoration(
+                  labelText: 'Hobbies',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese los hobbies';
+                  }
+                  return null;
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
                   onPressed: () async {
                     int edad = int.parse(edadController.text);
                     await updatePersonasToFirestore(
-                            uid, nombreApellidoController.text, edad)
+                            uid,
+                            nombreApellidoController.text,
+                            edad,
+                            hobbiesController.text)
                         .then((value) {
                       showDialog(
                         context: context,
@@ -89,7 +106,7 @@ class _EditPageState extends State<EditPage> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
-                                  Navigator.pop(context);
+                                  Navigator.pop(context, true);
                                 },
                                 child: Text('OK'),
                               ),

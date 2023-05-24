@@ -31,140 +31,134 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Center(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: Color.fromRGBO(0, 29, 36, 14),
-                    width: 1.0,
-                  ),
-                ),
                 child: FutureBuilder(
                   future: getPersonas(),
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
-                      return DataTable(
-                        columns: [
-                          DataColumn(
-                            label: SizedBox(
-                              width: 90,
-                              child: Text('Nombre y Apellido'),
-                            ),
-                          ),
-                          DataColumn(label: Text('Edad')),
-                          DataColumn(
-                            label: Text('Acciones'),
-                          ),
-                        ],
-                        rows: snapshot.data!.map<DataRow>((persona) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final persona = snapshot.data![index];
                           final uid = persona['uid'];
                           final nombreApellido = persona['nombre_Apellido'];
                           final edad = persona['edad'].toString();
+                          final hobbies = persona['hobbies'];
 
-                          return DataRow(cells: [
-                            DataCell(Text(nombreApellido)),
-                            DataCell(Text(edad)),
-                            DataCell(Row(
-                              children: [
-                                TextButton(
-                                  onPressed: () async {
-                                    await Navigator.pushNamed(
-                                      context,
-                                      '/editPage',
-                                      arguments: {
-                                        'nombre_Apellido': nombreApellido,
-                                        'edad': edad,
-                                        'uid': uid,
-                                      },
-                                    );
-                                    setState(() {});
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.edit,
-                                        color: Colors.orange, // Color naranja
-                                      ),
-                                      SizedBox(
-                                          width:
-                                              5), // Espacio entre el ícono y el texto
-                                    ],
-                                  ),
+                          return Card(
+                            child: ListTile(
+                              title: Text(
+                                nombreApellido,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                              'Confirmar eliminación'),
-                                          content: const Text(
-                                              '¿Estás seguro de eliminar este usuario?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Cancelar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  _isDeleting = true;
-                                                });
-                                                await eliminarUsuario(
-                                                    uid); // Función para eliminar al usuario
-                                                setState(() {
-                                                  _isDeleting = false;
-                                                });
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: const Text(
-                                                          'Eliminación exitosa'),
-                                                      content: const Text(
-                                                          'El usuario se eliminó correctamente.'),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: const Text(
-                                                              'Aceptar'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: const Text('Eliminar'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      SizedBox(
-                                          width:
-                                              5), // Espacio entre el ícono y el texto
-                                    ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Edad: $edad'),
+                                  Text('Hobbies: $hobbies'),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      final result = await Navigator.pushNamed(
+                                        context,
+                                        '/editPage',
+                                        arguments: {
+                                          'nombre_Apellido': nombreApellido,
+                                          'edad': edad,
+                                          'uid': uid,
+                                          'hobbies': hobbies,
+                                        },
+                                      );
+                                      if (result != null &&
+                                          result is bool &&
+                                          result) {
+                                        setState(() {});
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.orange,
+                                    ),
                                   ),
-                                )
-                              ],
-                            )),
-                          ]);
-                        }).toList(),
+                                  IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                              'Confirmar eliminación',
+                                            ),
+                                            content: const Text(
+                                              '¿Estás seguro de eliminar este usuario?',
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    _isDeleting = true;
+                                                  });
+                                                  await eliminarUsuario(uid);
+                                                  setState(() {
+                                                    _isDeleting = false;
+                                                  });
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (
+                                                      BuildContext context,
+                                                    ) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                          'Eliminación exitosa',
+                                                        ),
+                                                        content: const Text(
+                                                          'El usuario se eliminó correctamente.',
+                                                        ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: const Text(
+                                                              'Aceptar',
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: const Text('Eliminar'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       );
                     } else {
                       return const Center(
@@ -178,12 +172,24 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.pushNamed(context, '/addPage');
-          setState(() {});
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              await Navigator.pushNamed(context, '/addPage');
+              setState(() {});
+            },
+            child: const Icon(Icons.add),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: () async {
+              await Navigator.pushNamed(context, '/graph');
+            },
+            child: const Icon(Icons.bar_chart),
+          ),
+        ],
       ),
     );
   }
@@ -196,7 +202,7 @@ class PromedioEdadWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 80.0),
+          padding: const EdgeInsets.only(top: 35.0),
           child: Text(
             'Promedio de edad',
             textAlign: TextAlign.center,
@@ -207,14 +213,14 @@ class PromedioEdadWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 9),
         FutureBuilder<int>(
           future: getPromedioEdad(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               int averageAge = snapshot.data!;
               return Text(
-                '$averageAge Años',
+                '$averageAge años',
                 style: TextStyle(
                   color: Color.fromRGBO(0, 29, 36, 14),
                   fontSize: 28,
@@ -222,9 +228,15 @@ class PromedioEdadWidget extends StatelessWidget {
                 ),
               );
             } else {
-              return CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Color.fromRGBO(0, 29, 36, 14)),
+              return SizedBox(
+                width: 40,
+                height: 40,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Color.fromRGBO(0, 29, 36, 14),
+                  ),
+                ),
               );
             }
           },

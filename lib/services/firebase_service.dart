@@ -18,6 +18,7 @@ Future<List> getPersonas() async {
       'nombre_Apellido': data['nombre_Apellido'],
       'edad': data['edad'],
       'uid': documento.id,
+      'hobbies': data['hobbies'],
     };
     //se le agrega la data que viene en la db en la lista persona
     persona.add(person);
@@ -34,13 +35,13 @@ Future<void> addPersonasToFirestore(String nombreApellido, int edad) async {
       .add({"nombre_Apellido": nombreApellido, "edad": edad});
 }
 
-//Editar usuarios
 Future<void> updatePersonasToFirestore(
-    String uid, String newNombreApellido, int newEdad) async {
-  await db
-      .collection('personas')
-      .doc(uid)
-      .set({"nombre_Apellido": newNombreApellido, "edad": newEdad});
+    String uid, String newNombreApellido, int newEdad, String newHobbie) async {
+  await db.collection('personas').doc(uid).set({
+    "nombre_Apellido": newNombreApellido,
+    "edad": newEdad,
+    "hobbies": newHobbie,
+  }, SetOptions(merge: true));
 }
 
 //Eliminar usuarios
@@ -74,4 +75,49 @@ Future<int> getNumeroDePersonas() async {
   QuerySnapshot snapshot = await personsRef.get();
   int numberOfPersons = snapshot.size;
   return numberOfPersons;
+}
+
+//Registrar Usuarios con hobbies
+
+Future<void> agregarPersonaConHobbies(
+    String nombreApellido, int edad, String hobbies) async {
+  await FirebaseFirestore.instance.collection('personas').add({
+    "nombre_Apellido": nombreApellido,
+    "edad": edad,
+    "hobbies": hobbies,
+  });
+}
+
+//Obtener los hobbies de la persona
+
+Future<Map<String, int>> obtenerHobbies() async {
+  Map<String, int> personasPorHobby = {};
+
+  CollectionReference personasCollection =
+      FirebaseFirestore.instance.collection('personas');
+
+  try {
+    QuerySnapshot querySnapshot = await personasCollection.get();
+
+    querySnapshot.docs.forEach((doc) {
+      if (doc.exists) {
+        // Obtener el valor del campo "hobbies" de cada documento
+        String hobbiesString = doc['hobbies'];
+
+        // Convertir la cadena de hobbies en una lista
+        List<String> hobbies = hobbiesString.split(',');
+
+        // Actualizar el conteo de personas para cada hobby
+        hobbies.forEach((hobby) {
+          hobby = hobby
+              .trim(); // Eliminar posibles espacios en blanco alrededor del hobby
+          personasPorHobby[hobby] = (personasPorHobby[hobby] ?? 0) + 1;
+        });
+      }
+    });
+  } catch (e) {
+    print('Error al obtener los hobbies: $e');
+  }
+
+  return personasPorHobby;
 }
