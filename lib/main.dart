@@ -1,3 +1,5 @@
+import 'package:prueba/pages/login_page.dart';
+
 import '../pages/home.dart';
 import 'firebase_options.dart';
 import '../pages/add_name.dart';
@@ -22,9 +24,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Bienvenido A Nuestra App',
+        debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => const MyHomePage(),
+          '/loginPage.id': (context) => LoginPage(),
+          '/home': (context) => const MyHomePage(),
           '/addPage': (context) => const AddPage(),
           '/editPage': (context) => const EditPage(),
           '/graph': (context) => const GraphPage(),
