@@ -25,12 +25,28 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PersonasRegistradas(),
-          PromedioEdadWidget(),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Colors.grey[200],
+            child: PersonasRegistradas(),
+          ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            color: Colors.grey[200],
+            child: PromedioEdadWidget(),
+          ),
           Expanded(
             child: Center(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.grey[200],
+                ),
                 child: FutureBuilder(
                   future: getPersonas(),
                   builder: ((context, snapshot) {
@@ -45,6 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           final hobbies = persona['hobbies'];
 
                           return Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            color: Colors.white,
                             child: ListTile(
                               title: Text(
                                 nombreApellido,
@@ -198,50 +218,56 @@ class _MyHomePageState extends State<MyHomePage> {
 class PromedioEdadWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 35.0),
-          child: Text(
-            'Promedio de edad',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color.fromRGBO(0, 29, 36, 14),
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      color: Colors.grey[200],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 35.0),
+            child: Text(
+              'Promedio de edad',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color.fromRGBO(0, 29, 36, 14),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 9),
-        FutureBuilder<int>(
-          future: getPromedioEdad(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              int averageAge = snapshot.data!;
-              return Text(
-                '$averageAge años',
-                style: TextStyle(
-                  color: Color.fromRGBO(0, 29, 36, 14),
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            } else {
-              return SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Color.fromRGBO(0, 29, 36, 14),
+          SizedBox(height: 9),
+          FutureBuilder<int>(
+            future: getPromedioEdad(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                int averageAge = snapshot.data!;
+                return Text(
+                  '$averageAge años',
+                  style: TextStyle(
+                    color: Color.fromRGBO(0, 29, 36, 14),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+                );
+              } else {
+                return SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromRGBO(0, 29, 36, 14),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
