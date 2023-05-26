@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
+// ignore_for_file: use_build_context_synchronously
+
 class LoginPage extends StatefulWidget {
+  const LoginPage({
+    Key? key,
+  }) : super(key: key);
+
   static String id = 'login_page';
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -19,11 +25,11 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: 15.0,
               ),
-              _userTextField(),
+              UserTextField(),
               SizedBox(
                 height: 15,
               ),
-              _passwordTextField(),
+              PasswordTextField(),
               SizedBox(
                 height: 20.0,
               ),
@@ -34,54 +40,56 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Widget _userTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            icon: Icon(Icons.email),
-            hintText: 'ejemplo@correo.com',
-            labelText: 'correo electronico',
-          ),
-          onChanged: (value) {},
-        ),
-      );
-    });
-  }
-
-  Widget _passwordTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          obscureText: true,
-          decoration: InputDecoration(
-            icon: Icon(Icons.email),
-            hintText: 'contraseña',
-            labelText: 'contraseña',
-          ),
-          onChanged: (value) {},
-        ),
-      );
-    });
-  }
-
-/*   Widget _bottonLogin() {
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot snapshot){
-        return RaisedButton(
-          child: Container
-          Padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15.0),
-          child: Text('iniciar sesion'),
-        );
-
-      }
-    ); 
-  }*/
 }
+
+class UserTextField extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          icon: Icon(Icons.email),
+          hintText: 'ejemplo@correo.com',
+          labelText: 'correo electronico',
+        ),
+        onChanged: (value) {},
+      ),
+    );
+  }
+}
+
+class PasswordTextField extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        obscureText: true,
+        decoration: InputDecoration(
+          icon: Icon(Icons.email),
+          hintText: 'contraseña',
+          labelText: 'contraseña',
+        ),
+        onChanged: (value) {},
+      ),
+    );
+  }
+}
+
+/* class ButtonLogin extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: () {
+        // Lógica para iniciar sesión
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15.0),
+        child: Text('Iniciar sesión'),
+      ),
+    );
+  }
+} */
