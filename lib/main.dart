@@ -1,11 +1,10 @@
-import 'package:prueba/pages/login_page.dart';
-
 import '../pages/home.dart';
 import 'firebase_options.dart';
 import '../pages/add_name.dart';
+import '../pages/edit_name.dart';
 import '../pages/graph_page.dart';
+import '../pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba/pages/edit_name.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -19,15 +18,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Bienvenido A Nuestra App',
         debugShowCheckedModeBanner: false,
-        initialRoute: '/',
         routes: {
-          '/loginPage.id': (context) => LoginPage(),
+          '/': (context) => const LoginPage(),
           '/home': (context) => const MyHomePage(),
           '/addPage': (context) => const AddPage(),
           '/editPage': (context) => const EditPage(),

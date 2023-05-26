@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({
+    Key? key,
+  }) : super(key: key);
+
   static String id = 'login_page';
 
   @override
-  _loginPageState createState() => _loginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _loginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,7 +20,7 @@ class _loginPageState extends State<LoginPage> {
         body: Center(
           child: Column(
             children: [
-              Image.asset(),
+              // Image.asset(),
               SizedBox(
                 height: 15.0,
               ),
@@ -27,58 +32,51 @@ class _loginPageState extends State<LoginPage> {
               SizedBox(
                 height: 20.0,
               ),
-              _bottonLogin(),
+              //_bottonLogin(),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _userTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            icon: Icon(Icons.email),
-            hintText: 'ejemplo@correo.com',
-            labelText: 'correo electronico',
-          ),
-          onChanged: (value) {
-
-          },
+Widget _userTextField() {
+  return StreamBuilder(builder: (BuildContext context, AsyncSnapshot snapshot) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+          icon: Icon(Icons.email),
+          hintText: 'ejemplo@correo.com',
+          labelText: 'correo electronico',
         ),
-      );
-    }
+        onChanged: (value) {},
+      ),
     );
-  }
+  });
+}
 
-  Widget _passwordTextField() {
-    return StreamBuilder(
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          obscureText: true,
-          decoration: InputDecoration(
-            icon: Icon(Icons.email),
-            hintText: 'contraseña',
-            labelText: 'contraseña',
-          ),
-          onChanged: (value) {
-
-          },
+Widget _passwordTextField() {
+  return StreamBuilder(builder: (BuildContext context, AsyncSnapshot snapshot) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: TextField(
+        keyboardType: TextInputType.emailAddress,
+        obscureText: true,
+        decoration: InputDecoration(
+          icon: Icon(Icons.email),
+          hintText: 'contraseña',
+          labelText: 'contraseña',
         ),
-      );
-    }
+        onChanged: (value) {},
+      ),
     );
-  }
+  });
+}
 
-  Widget _bottonLogin() {
+/*   Widget _bottonLogin() {
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot snapshot){
         return RaisedButton(
@@ -89,5 +87,4 @@ class _loginPageState extends State<LoginPage> {
 
       }
     );
-  }
-}
+  } */
