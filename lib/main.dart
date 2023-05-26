@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         title: 'Bienvenido A Nuestra App',
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => const LoginPage(),
+          '/': (context) => LoginPage(),
           '/home': (context) => const MyHomePage(),
           '/addPage': (context) => const AddPage(),
           '/editPage': (context) => const EditPage(),
