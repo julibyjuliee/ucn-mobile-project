@@ -17,15 +17,16 @@ class _AddPageState extends State<AddPage> {
   TextEditingController nombreApellidoController =
       TextEditingController(text: "");
   TextEditingController edadController = TextEditingController(text: "");
-  String selectedHobby = ''; // Opción predeterminada
+  String selectedHobby = 'Cocinar'; // Opción predeterminada
   bool showHobbiesField =
       false; // Variable para controlar la visibilidad del campo de selección de hobbies
 
-  List<String> hobbies = ['', 'Cocinar', 'Bailar', 'El Fútbol', 'Otros'];
+  List<String> hobbies = ['Cocinar', 'Bailar', 'El Fútbol', 'Otros'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text('Agregar Usuarios'),
       ),
@@ -36,59 +37,82 @@ class _AddPageState extends State<AddPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                controller: nombreApellidoController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombres Y Apellidos',
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Color de fondo suave (gris claro)
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Bordes redondeados
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese los nombres y apellidos';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: edadController,
-                decoration: const InputDecoration(
-                  labelText: 'Edad',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese la edad';
-                  }
-                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                    return 'La edad solo puede contener caracteres numéricos';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              if (showHobbiesField) // Mostrar el campo de selección de hobbies solo si showHobbiesField es true
-                DropdownButtonFormField<String>(
-                  value: selectedHobby,
+                child: TextFormField(
+                  controller: nombreApellidoController,
                   decoration: const InputDecoration(
-                    labelText: 'Hobbies',
+                    labelText: 'Nombres Y Apellidos',
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedHobby = value!;
-                    });
-                  },
                   validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        value == 'Seleccione un hobby') {
-                      return 'Por favor seleccione un hobby';
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese los nombres y apellidos';
                     }
                     return null;
                   },
-                  items: hobbies.map((hobby) {
-                    return DropdownMenuItem<String>(
-                      value: hobby,
-                      child: Text(hobby),
-                    );
-                  }).toList(),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Color de fondo suave (gris claro)
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Bordes redondeados
+                ),
+                child: TextFormField(
+                  controller: edadController,
+                  decoration: const InputDecoration(
+                    labelText: 'Edad',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese la edad';
+                    }
+                    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'La edad solo puede contener caracteres numéricos';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              if (showHobbiesField) // Mostrar el campo de selección de hobbies solo si showHobbiesField es true
+                Container(
+                  decoration: BoxDecoration(
+                    color:
+                        Colors.grey[200], // Color de fondo suave (gris claro)
+                    borderRadius:
+                        BorderRadius.circular(10.0), // Bordes redondeados
+                  ),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedHobby,
+                    decoration: const InputDecoration(
+                      labelText: 'Hobbies',
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedHobby = value!;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value == 'Seleccione un hobby') {
+                        return 'Por favor seleccione un hobby';
+                      }
+                      return null;
+                    },
+                    items: hobbies.map((hobby) {
+                      return DropdownMenuItem<String>(
+                        value: hobby,
+                        child: Text(hobby),
+                      );
+                    }).toList(),
+                  ),
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

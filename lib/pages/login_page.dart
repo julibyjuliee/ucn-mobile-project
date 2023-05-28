@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
-// ignore_for_file: use_build_context_synchronously
-
 class LoginPage extends StatefulWidget {
   const LoginPage({
     Key? key,
   }) : super(key: key);
-
-  static String id = 'login_page';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -24,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
         body: Center(
           child: Column(
             children: [
-              // Image.asset(),
               SizedBox(
                 height: 15.0,
               ),
@@ -56,15 +51,20 @@ class UserTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           icon: Icon(Icons.email),
           hintText: 'ejemplo@correo.com',
-          labelText: 'correo electronico',
+          labelText: 'correo electrónico',
+          border: InputBorder
+              .none, // Para eliminar el borde predeterminado del TextField
         ),
-        onChanged: (value) {},
       ),
     );
   }
@@ -78,6 +78,10 @@ class PasswordTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.emailAddress,
@@ -86,8 +90,9 @@ class PasswordTextField extends StatelessWidget {
           icon: Icon(Icons.lock),
           hintText: 'contraseña',
           labelText: 'contraseña',
+          border: InputBorder
+              .none, // Para eliminar el borde predeterminado del TextField
         ),
-        onChanged: (value) {},
       ),
     );
   }
@@ -96,11 +101,12 @@ class PasswordTextField extends StatelessWidget {
 class ButtonLogin extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController contrasenaController;
-  const ButtonLogin(
-      {Key? key,
-      required this.emailController,
-      required this.contrasenaController})
-      : super(key: key);
+  const ButtonLogin({
+    Key? key,
+    required this.emailController,
+    required this.contrasenaController,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -108,9 +114,11 @@ class ButtonLogin extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15.0),
         child: Text('Iniciar sesión'),
       ),
-      /*style: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),*/
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
       onPressed: () {
         // Lógica para iniciar sesión
         String email = emailController.text;
@@ -118,7 +126,15 @@ class ButtonLogin extends StatelessWidget {
         if (email == 'ejemplo@correo.com' && contrasena == '123') {
           Navigator.pushNamed(context, '/home');
         } else {
-          print('Ingreso Incorrecto');
+          // Credenciales incorrectas
+          final snackBar = SnackBar(
+            content: Text(
+              'Usuario y/o contraseña incorrectos',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       },
     );

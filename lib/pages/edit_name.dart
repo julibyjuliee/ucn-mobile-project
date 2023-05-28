@@ -35,6 +35,7 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 194, 194, 194),
       appBar: AppBar(
         title: const Text('Editar Usuarios'),
       ),
@@ -45,44 +46,67 @@ class _EditPageState extends State<EditPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                controller: nombreApellidoController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombres y Apellidos',
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Color de fondo suave (gris claro)
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Bordes redondeados
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese los nombres y apellidos';
-                  }
-                  return null;
-                },
+                child: TextFormField(
+                  controller: nombreApellidoController,
+                  decoration: const InputDecoration(
+                    labelText: 'Nombres y Apellidos',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese los nombres y apellidos';
+                    }
+                    return null;
+                  },
+                ),
               ),
-              TextFormField(
-                controller: edadController,
-                decoration: const InputDecoration(
-                  labelText: 'Edad',
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Color de fondo suave (gris claro)
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Bordes redondeados
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese la edad';
-                  }
-                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                    return 'La edad solo puede contener caracteres numéricos';
-                  }
-                  return null;
-                },
+                child: TextFormField(
+                  controller: edadController,
+                  decoration: const InputDecoration(
+                    labelText: 'Edad',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese la edad';
+                    }
+                    if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'La edad solo puede contener caracteres numéricos';
+                    }
+                    return null;
+                  },
+                ),
               ),
-              TextFormField(
-                controller: hobbiesController,
-                decoration: const InputDecoration(
-                  labelText: 'Hobbies',
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Color de fondo suave (gris claro)
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Bordes redondeados
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese los hobbies';
-                  }
-                  return null;
-                },
+                child: TextFormField(
+                  controller: hobbiesController,
+                  decoration: const InputDecoration(
+                    labelText: 'Hobbies',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese los hobbies';
+                    }
+                    return null;
+                  },
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -90,18 +114,19 @@ class _EditPageState extends State<EditPage> {
                   onPressed: () async {
                     int edad = int.parse(edadController.text);
                     await updatePersonasToFirestore(
-                            uid,
-                            nombreApellidoController.text,
-                            edad,
-                            hobbiesController.text)
-                        .then((value) {
+                      uid,
+                      nombreApellidoController.text,
+                      edad,
+                      hobbiesController.text,
+                    ).then((value) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text('Actualizado con éxito'),
                             content: Text(
-                                'El usuario se ha actualizado correctamente.'),
+                              'El usuario se ha actualizado correctamente.',
+                            ),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {

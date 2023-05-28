@@ -19,6 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text('Inicio'),
       ),
@@ -198,50 +199,57 @@ class _MyHomePageState extends State<MyHomePage> {
 class PromedioEdadWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 35.0),
-          child: Text(
-            'Promedio de edad',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color.fromRGBO(0, 29, 36, 14),
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200], // Color de fondo suave (gris claro)
+        borderRadius: BorderRadius.circular(10.0), // Bordes redondeados
+      ),
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 35.0),
+            child: Text(
+              'Promedio de edad',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color.fromRGBO(0, 29, 36, 14),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 9),
-        FutureBuilder<int>(
-          future: getPromedioEdad(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              int averageAge = snapshot.data!;
-              return Text(
-                '$averageAge años',
-                style: TextStyle(
-                  color: Color.fromRGBO(0, 29, 36, 14),
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            } else {
-              return SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Color.fromRGBO(0, 29, 36, 14),
+          SizedBox(height: 9),
+          FutureBuilder<int>(
+            future: getPromedioEdad(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                int averageAge = snapshot.data!;
+                return Text(
+                  '$averageAge años',
+                  style: TextStyle(
+                    color: Color.fromRGBO(0, 29, 36, 14),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+                );
+              } else {
+                return SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromRGBO(0, 29, 36, 14),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -251,6 +259,10 @@ class PersonasRegistradas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
+      decoration: BoxDecoration(
+        color: Colors.grey[200], // Color de fondo suave (gris claro)
+        borderRadius: BorderRadius.circular(10.0), // Bordes redondeados
+      ),
       child: Center(
         child: FutureBuilder<int>(
           future: getNumeroDePersonas(),
