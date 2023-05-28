@@ -26,7 +26,7 @@ class _AddPageState extends State<AddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.grey[200],
+      backgroundColor: Color.fromARGB(255, 194, 194, 194),
       appBar: AppBar(
         title: const Text('Agregar Usuarios'),
       ),
