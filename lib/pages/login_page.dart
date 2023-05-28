@@ -17,26 +17,30 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 15.0,
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                '../../img/forest.png',
+                fit: BoxFit.cover,
               ),
-              UserTextField(controller: emailController),
-              SizedBox(
-                height: 15,
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  UserTextField(controller: emailController),
+                  SizedBox(height: 15),
+                  PasswordTextField(controller: contrasenaController),
+                  SizedBox(height: 20.0),
+                  ButtonLogin(
+                    emailController: emailController,
+                    contrasenaController: contrasenaController,
+                  ),
+                ],
               ),
-              PasswordTextField(controller: contrasenaController),
-              SizedBox(
-                height: 20.0,
-              ),
-              ButtonLogin(
-                emailController: emailController,
-                contrasenaController: contrasenaController,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
