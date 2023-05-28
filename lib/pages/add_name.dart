@@ -17,9 +17,11 @@ class _AddPageState extends State<AddPage> {
   TextEditingController nombreApellidoController =
       TextEditingController(text: "");
   TextEditingController edadController = TextEditingController(text: "");
-  TextEditingController hobbiesController = TextEditingController(text: "");
+  String selectedHobby = ''; // Opción predeterminada
+  bool showHobbiesField =
+      false; // Variable para controlar la visibilidad del campo de selección de hobbies
 
-  bool mostrarCampoHobbies = false;
+  List<String> hobbies = ['', 'Cocinar', 'Bailar', 'El Fútbol', 'Otros'];
 
   @override
   Widget build(BuildContext context) {
@@ -62,18 +64,31 @@ class _AddPageState extends State<AddPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              if (mostrarCampoHobbies)
-                TextFormField(
-                  controller: hobbiesController,
+              if (showHobbiesField) // Mostrar el campo de selección de hobbies solo si showHobbiesField es true
+                DropdownButtonFormField<String>(
+                  value: selectedHobby,
                   decoration: const InputDecoration(
                     labelText: 'Hobbies',
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedHobby = value!;
+                    });
+                  },
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese los hobbies';
+                    if (value == null ||
+                        value.isEmpty ||
+                        value == 'Seleccione un hobby') {
+                      return 'Por favor seleccione un hobby';
                     }
                     return null;
                   },
+                  items: hobbies.map((hobby) {
+                    return DropdownMenuItem<String>(
+                      value: hobby,
+                      child: Text(hobby),
+                    );
+                  }).toList(),
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -81,7 +96,8 @@ class _AddPageState extends State<AddPage> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        mostrarCampoHobbies = true;
+                        showHobbiesField =
+                            true; // Mostrar el campo de selección de hobbies al hacer clic en el botón
                       });
                     },
                     child: const Text('Agregar Hobbies'),
@@ -92,11 +108,8 @@ class _AddPageState extends State<AddPage> {
                       if (_formKey.currentState!.validate()) {
                         String nombreApellido = nombreApellidoController.text;
                         int edad = int.parse(edadController.text);
-                        String hobbies = hobbiesController.text;
-
-                        // Llamar a la función para agregar la persona y sus hobbies en Firestore
-                        agregarPersonaConHobbies(nombreApellido, edad, hobbies);
-
+                        agregarPersonaConHobbies(
+                            nombreApellido, edad, selectedHobby);
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -108,8 +121,7 @@ class _AddPageState extends State<AddPage> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
-                                    Navigator.pop(
-                                        context); // Volver a la pantalla anterior
+                                    Navigator.pop(context, true);
                                   },
                                   child: Text('OK'),
                                 ),
