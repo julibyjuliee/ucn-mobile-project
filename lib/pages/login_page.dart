@@ -14,6 +14,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController contrasenaController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,15 +28,18 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: 15.0,
               ),
-              UserTextField(),
+              UserTextField(controller: emailController),
               SizedBox(
                 height: 15,
               ),
-              PasswordTextField(),
+              PasswordTextField(controller: contrasenaController),
               SizedBox(
                 height: 20.0,
               ),
-              // _bottonLogin(),
+              ButtonLogin(
+                emailController: emailController,
+                contrasenaController: contrasenaController,
+              ),
             ],
           ),
         ),
@@ -43,11 +49,15 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class UserTextField extends StatelessWidget {
+  final TextEditingController controller;
+  const UserTextField({Key? key, required this.controller}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
+        controller: controller,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           icon: Icon(Icons.email),
@@ -61,15 +71,19 @@ class UserTextField extends StatelessWidget {
 }
 
 class PasswordTextField extends StatelessWidget {
+  final TextEditingController controller;
+  const PasswordTextField({Key? key, required this.controller})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
+        controller: controller,
         keyboardType: TextInputType.emailAddress,
         obscureText: true,
         decoration: InputDecoration(
-          icon: Icon(Icons.email),
+          icon: Icon(Icons.lock),
           hintText: 'contraseña',
           labelText: 'contraseña',
         ),
@@ -79,17 +93,34 @@ class PasswordTextField extends StatelessWidget {
   }
 }
 
-/* class ButtonLogin extends StatelessWidget {
+class ButtonLogin extends StatelessWidget {
+  final TextEditingController emailController;
+  final TextEditingController contrasenaController;
+  const ButtonLogin(
+      {Key? key,
+      required this.emailController,
+      required this.contrasenaController})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      onPressed: () {
-        // Lógica para iniciar sesión
-      },
+    return ElevatedButton(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15.0),
         child: Text('Iniciar sesión'),
       ),
+      /*style: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),*/
+      onPressed: () {
+        // Lógica para iniciar sesión
+        String email = emailController.text;
+        String contrasena = contrasenaController.text;
+        if (email == 'ejemplo@correo.com' && contrasena == '123') {
+          Navigator.pushNamed(context, '/home');
+        } else {
+          print('Ingreso Incorrecto');
+        }
+      },
     );
   }
-} */
+}
